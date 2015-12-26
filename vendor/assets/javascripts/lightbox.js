@@ -41,12 +41,12 @@
   Lightbox.defaults = {
     albumLabel: 'Image %1 of %2',
     alwaysShowNavOnTouchDevices: false,
-    fadeDuration: 500,
+    fadeDuration: 300,
     fitImagesInViewport: true,
     // maxWidth: 800,
     // maxHeight: 600,
     positionFromTop: 50,
-    resizeDuration: 700,
+    resizeDuration: 300,
     showImageNumberLabel: true,
     wrapAround: false
   };
@@ -78,7 +78,7 @@
   // Attach event handlers to the new DOM elements. click click click
   Lightbox.prototype.build = function() {
     var self = this;
-    $('<div id="lightboxOverlay" class="lightboxOverlay"></div><div id="lightbox" class="lightbox"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" /><div class="lb-nav"><a class="lb-prev" href="" ></a><a class="lb-next" href="" ></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div>').appendTo($('body'));
+    $("<div id='lightboxOverlay' class='lightboxOverlay'></div><div id='lightbox' class='lightbox'><div class='lb-outerContainer'><div class='lb-container'><img class='lb-image' src='' /><div class='lb-nav'><a class='lb-prev' href='' ></a><a class='lb-next' href='' ></a></div><div class='lb-loader'><a class='lb-cancel'></a></div><a class='lb-download' href='' target='_blank'></a></div></div><div class='lb-dataContainer'><div class='lb-data'><div class='lb-details'><span class='lb-caption'></span><span class='lb-number'></span></div><div class='lb-closeContainer'><a class='lb-close'></a></div></div></div></div>").appendTo($('body'));
 
     // Cache jQuery objects
     this.$lightbox       = $('#lightbox');
@@ -133,6 +133,9 @@
     this.$lightbox.find('.lb-loader, .lb-close').on('click', function() {
       self.end();
       return false;
+    });
+    this.$lightbox.find('.lb-download').on('click', function (e) {
+      window.open(e.target.href)
     });
   };
 
@@ -204,6 +207,7 @@
 
     this.disableKeyboardNav();
     var $image = this.$lightbox.find('.lb-image');
+    var $downloadLink = this.$lightbox.find('.lb-download');
 
     this.$overlay.fadeIn(this.options.fadeDuration);
 
@@ -224,6 +228,7 @@
       var windowWidth;
 
       $image.attr('src', self.album[imageNumber].link);
+      $downloadLink.attr('href', self.album[imageNumber].link);
 
       $preloader = $(preloader);
 
